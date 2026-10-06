@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ta" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Universal AI Chatbot - Answers questions accurately and quickly across all School, College, Technical, and Non-Technical domains in Tamil and English.">
+  <title>Universal AI Chatbot | அகில உலக AI உதவியாளர்</title>
+  
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Noto+Sans+Tamil:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome for modern icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-brain"></i>
+          </div>
+          <div class="brand-text">
+            <h2>Universal AI</h2>
+            <span class="sub-badge" id="badgeRole">AI உதவியாளர்</span>
+          </div>
+        </div>
+        <button class="icon-btn close-sidebar-btn" id="closeSidebarBtn" title="Close Sidebar" aria-label="Close Sidebar">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="sidebar-action">
+        <button class="new-chat-btn" id="newChatBtn">
+          <i class="fa-solid fa-plus"></i>
+          <span id="btnNewChatText">New Chat</span>
+        </button>
+      </div>
+
+      <!-- Domain Categories Explorer -->
+      <div class="sidebar-section">
+        <div class="section-title">
+          <i class="fa-solid fa-layer-group"></i>
+          <span id="domainsTitle">Domains / துறைகள்</span>
+        </div>
+        <div class="domain-scroll-list" id="domainList">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Chat History -->
+      <div class="sidebar-section history-section">
+        <div class="section-title">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span id="historyTitle">Recent Chats</span>
+        </div>
+        <div class="history-list" id="historyList">
+          <div class="empty-history-note" id="emptyHistoryNote">No previous chats yet</div>
+        </div>
+      </div>
+
+      <!-- Sidebar Footer / Controls -->
+      <div class="sidebar-footer">
+        <button class="sidebar-footer-btn" id="openSettingsBtn">
+          <i class="fa-solid fa-gear"></i>
+          <span id="settingsBtnText">API Settings</span>
+        </button>
+        <button class="sidebar-footer-btn" id="clearAllHistoryBtn" title="Clear History">
+          <i class="fa-solid fa-trash-can"></i>
+          <span id="clearHistoryBtnText">Clear All</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Chat Container -->
+    <main class="main-content">
+      <!-- Top Navigation Bar -->
+      <header class="chat-header">
+        <div class="header-left">
+          <button class="icon-btn sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Sidebar" aria-label="Toggle Sidebar">
+            <i class="fa-solid fa-bars-staggered"></i>
+          </button>
+          <div class="header-title-wrap">
+            <h1 class="header-title" id="mainHeaderTitle">Universal AI Assistant</h1>
+            <div class="status-indicator">
+              <span class="pulse-dot"></span>
+              <span class="status-text" id="statusText">Active & Ready (Fast &lt;5s)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <!-- Language Selector -->
+          <div class="lang-switch-wrap">
+            <button class="lang-btn active" id="langEnBtn" data-lang="en">EN</button>
+            <button class="lang-btn" id="langTaBtn" data-lang="ta">தமிழ்</button>
+          </div>
+
+          <!-- Theme Toggle -->
+          <button class="icon-btn theme-toggle-btn" id="themeToggleBtn" title="Toggle Theme" aria-label="Toggle Theme">
+            <i class="fa-solid fa-moon" id="themeIcon"></i>
+          </button>
+
+          <!-- Export Chat -->
+          <button class="icon-btn" id="exportChatBtn" title="Export Conversation" aria-label="Export Conversation">
+            <i class="fa-solid fa-download"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Chat Messages Scroll Area -->
+      <div class="chat-scroll-container" id="chatContainer">
+        <!-- Hero / Welcome Greeting -->
+        <div class="welcome-hero" id="welcomeHero">
+          <div class="hero-avatar">
+            <div class="avatar-ring">
+              <i class="fa-solid fa-atom fa-spin-pulse"></i>
+            </div>
+          </div>
+          <h2 class="hero-title" id="heroGreeting">வணக்கம்! நான் உங்கள் Universal AI Assistant</h2>
+          <p class="hero-subtitle" id="heroDescription">
+            பள்ளிக்கல்வி, பொறியியல், கோடிங், பொது அறிவு, கணிதம், ஆங்கிலம் மற்றும் தமிழ் என அனைத்து கேள்விகளுக்கும் 5 வினாடிகளில் துல்லியமான பதில் தருகிறேன்.
+          </p>
+
+          <!-- Quick Suggestion Cards -->
+          <div class="quick-cards-grid" id="quickCardsGrid">
+            <!-- Dynamic cards injected via JavaScript -->
+          </div>
+        </div>
+
+        <!-- Chat message thread -->
+        <div class="messages-wrapper" id="messagesWrapper"></div>
+      </div>
+
+      <!-- Chat Input Area -->
+      <footer class="chat-input-area">
+        <!-- Quick Domain Tags Pill Bar -->
+        <div class="domain-pills-bar" id="domainPillsBar">
+          <button class="domain-pill" data-query="கணிதம் (Mathematics): Solve 3x + 5 = 26 step by step">📐 Math Problem</button>
+          <button class="domain-pill" data-query="Python code to reverse a string and check palindrome with example">🐍 Python Code</button>
+          <button class="domain-pill" data-query="திருக்குறள் 'அகர முதல எழுத்தெல்லாம்' விளக்கம் கூறுக">📜 திருக்குறள் விளக்கம்</button>
+          <button class="domain-pill" data-query="What is the current date and time right now?">🕒 Current Date & Time</button>
+          <button class="domain-pill" data-query="Explain Artificial Intelligence vs Machine Learning with a simple real-life example">🤖 AI vs ML</button>
+          <button class="domain-pill" data-query="Top 5 HR interview questions and how to answer them">💼 Interview Tips</button>
+          <button class="domain-pill" data-query="Newton's three laws of motion with real-world examples">🔬 Physics: Newton's Laws</button>
+          <button class="domain-pill" data-query="Web Development Roadmap for beginners in 2026">🌐 Web Dev Roadmap</button>
+        </div>
+
+        <!-- Input Box Wrapper -->
+        <div class="input-box-container">
+          <div class="input-controls-left">
+            <button class="input-tool-btn" id="voiceInputBtn" title="Speak to input (Voice recognition)" aria-label="Voice Input">
+              <i class="fa-solid fa-microphone" id="voiceMicIcon"></i>
+            </button>
+          </div>
+
+          <textarea 
+            id="chatInput" 
+            class="chat-textarea" 
+            placeholder="எதையும் கேளுங்கள்... / Ask any question in Tamil or English (Enter to send, Shift+Enter for new line)..." 
+            rows="1"
+            aria-label="Chat input query"
+          ></textarea>
+
+          <div class="input-controls-right">
+            <span class="char-count" id="charCount">0/4000</span>
+            <button class="send-btn" id="sendBtn" title="Send message" aria-label="Send Message" disabled>
+              <i class="fa-solid fa-arrow-up"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="input-footer-note">
+          <span id="footerNote">Universal AI • Answers in &lt;5s • Tamil & English Supported • Multi-Domain Intelligence</span>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Settings Modal (API Key & Model Selection) -->
+  <div class="modal-overlay" id="settingsModal" aria-hidden="true">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-sliders"></i>
+          <h3 id="modalTitle">Settings / அமைப்புகள்</h3>
+        </div>
+        <button class="icon-btn modal-close-btn" id="closeSettingsModal" aria-label="Close settings">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="apiKeyInput" id="labelApiKey">
+            Google Gemini API Key 
+            <span class="optional-tag">(Optional - Live Universal Engine)</span>
+          </label>
+          <div class="api-input-wrap">
+            <input 
+              type="password" 
+              id="apiKeyInput" 
+              placeholder="AIzaSy..." 
+              autocomplete="off"
+            />
+            <button type="button" class="toggle-pwd-btn" id="toggleApiKeyVisibility" title="Show/Hide">
+              <i class="fa-solid fa-eye" id="pwdEyeIcon"></i>
+            </button>
+          </div>
+          <p class="form-tip" id="apiTip">
+            API Key கொடுத்தால் கூகிளின் அதிநவீன Gemini 1.5/2.0 AI மாடலை முழுமையாக பயன்படுத்தலாம். (Key உங்கள் Browser LocalStorage-ல் பாதுகாப்பாக சேமிக்கப்படும்). Key இல்லையென்றாலும் உள்ளமைக்கப்பட்ட Smart Assistant இயங்கும்!
+          </p>
+          <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="link-external">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Get Free Gemini API Key here
+          </a>
+        </div>
+
+        <div class="form-group">
+          <label for="modelSelect" id="labelModel">AI Model</label>
+          <select id="modelSelect" class="form-select">
+            <option value="gemini-1.5-flash">Gemini 1.5 Flash (Ultra-fast &lt;2s)</option>
+            <option value="gemini-2.0-flash">Gemini 2.0 Flash (Next-Gen High Speed)</option>
+            <option value="gemini-1.5-pro">Gemini 1.5 Pro (Deep Reasoning)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="speechVoiceSelect" id="labelSpeech">Text-to-Speech Voice (பேச்சு குரல்)</label>
+          <select id="speechVoiceSelect" class="form-select">
+            <option value="auto">Auto Detect (English / தமிழ்)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="resetSettingsBtn">Reset</button>
+        <button class="btn btn-primary" id="saveSettingsBtn">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Main JavaScript App -->
+  <script src="app.js"></script>
+</body>
+</html>
